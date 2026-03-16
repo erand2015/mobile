@@ -16,7 +16,8 @@ const PRODUCTS = [
   { id: 6, name: "G-Force Rig", cat: "Gaming", price: "3,499 €", old: "3,999 €", img: "https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=800", tag: "Monster" },
 ];
 
-const fadeInUpVariants = {
+// Rregulluar me 'any' per te evituar konfliktin e Build-it me Framer Motion
+const fadeInUpVariants: any = {
   hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
@@ -25,7 +26,7 @@ const fadeInUpVariants = {
   }
 };
 
-const staggerContainerVariants = {
+const staggerContainerVariants: any = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1, 
