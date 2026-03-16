@@ -55,10 +55,10 @@ export default function TitanUltimateExperience() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-[#020202]" />
         <div className="relative z-10 text-center px-4">
           <motion.h1 
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-[18vw] md:text-[15vw] font-black italic uppercase leading-none tracking-tighter"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-[18vw] md:text-[15vw] font-black italic uppercase leading-none tracking-tighter will-change-transform"
           >
             TITAN.
           </motion.h1>
@@ -76,15 +76,19 @@ export default function TitanUltimateExperience() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
           {PRODUCTS.map(p => (
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
               key={p.id} 
-              className="group bg-zinc-900/20 border border-white/5 rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 hover:bg-zinc-800/30 transition-all"
+              className="group bg-zinc-900/20 border border-white/5 rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 hover:bg-zinc-800/30 transition-all will-change-transform"
             >
-              <div className="relative h-60 md:h-72 overflow-hidden rounded-2xl mb-6 md:mb-8">
+              <div className="relative h-60 md:h-72 overflow-hidden rounded-2xl mb-6 md:mb-8 bg-zinc-800">
                  <div className="absolute top-4 left-4 z-20 bg-blue-600 text-[8px] font-black px-3 py-1 rounded-full uppercase italic tracking-widest">{p.tag}</div>
-                 <img src={p.img} className="w-full h-full object-cover grayscale md:grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" />
+                 <img 
+                    src={p.img} 
+                    className="w-full h-full object-cover grayscale md:grayscale group-hover:grayscale-0 md:group-hover:scale-105 transition-all duration-500 ease-out will-change-transform" 
+                 />
               </div>
               <div className="flex justify-between items-start mb-6">
                 <div>
