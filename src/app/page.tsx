@@ -1,201 +1,143 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { 
-  ShoppingBag, Search, ChevronRight, ShieldCheck, 
-  Truck, RotateCcw, CreditCard, Plus, ArrowRight
+  ShoppingBag, Search, Shield, Zap, Globe, ChevronRight, Menu, X 
 } from "lucide-react";
 
-const HERO_SLIDES = [
-  {
-    id: 1,
-    category: "E RE",
-    title: "Titan Pro X",
-    subtitle: "Fuqia e inteligjencës artificiale në duart tuaja.",
-    price: "Nga 1,199 € ose 49.90 €/muaj",
-    img: "https://images.pexels.com/photos/805922/pexels-photo-805922.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    theme: "light",
-  },
-  {
-    id: 2,
-    category: "PRO",
-    title: "M2 Ultra Display",
-    subtitle: "Për ata që krijojnë të ardhmen.",
-    price: "Nga 1,599 €",
-    img: "https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    theme: "dark",
-  }
-];
+export default function TitanEliteExperience() {
+  const { scrollY } = useScroll();
+  
+  // Efektet e dritës dhe shkallëzimit bazuar në scroll
+  const opacity = useTransform(scrollY, [0, 200], [1, 0]);
+  const scale = useTransform(scrollY, [0, 500], [1, 1.5]);
+  const coreGlow = useTransform(scrollY, [0, 500], ["0px 0px 20px #00FFFF", "0px 0px 150px #00FFFF"]);
 
-const NEW_PRODUCTS = [
-  { id: 101, name: "Titan Pad Air", price: "649 €", img: "https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg?auto=compress&cs=tinysrgb&w=800", tag: "New" },
-  { id: 102, name: "MacBook Pro M3", price: "1,999 €", img: "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800", tag: "Best Seller" },
-  { id: 103, name: "Titan Audio Pro", price: "249 €", img: "https://images.pexels.com/photos/3394651/pexels-photo-3394651.jpeg?auto=compress&cs=tinysrgb&w=800", tag: "Sale" },
-  { id: 104, name: "Neural Watch", price: "399 €", img: "https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=800", tag: "New" },
-];
-
-const ACCESSORIES = [
-  { id: 201, name: "Mbrojtëse Silicone", price: "49 €", img: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=400" },
-  { id: 202, name: "Karikues 65W", price: "35 €", img: "https://images.pexels.com/photos/4195324/pexels-photo-4195324.jpeg?auto=compress&cs=tinysrgb&w=400" },
-  { id: 203, name: "Titan Pen", price: "129 €", img: "https://images.pexels.com/photos/635143/pexels-photo-635143.jpeg?auto=compress&cs=tinysrgb&w=400" },
-];
-
-export default function TitanStore() {
   return (
-    <main className="bg-white text-[#1d1d1f] font-sans overflow-x-hidden">
+    <main className="bg-[#050505] text-white font-sans selection:bg-[#00FFFF] selection:text-black">
       
-      {/* 1. NAVBAR */}
-      <nav className="fixed top-0 w-full z-[200] bg-white/80 backdrop-blur-2xl border-b border-[#d2d2d7]/30">
-        <div className="max-w-[1024px] mx-auto h-12 flex items-center justify-between px-6">
-          <div className="text-xl font-bold tracking-tighter cursor-pointer">TITAN.</div>
-          <div className="hidden md:flex gap-8 text-[12px] font-medium text-[#1d1d1f]/80">
-            <button className="hover:text-blue-600 transition-colors">Telefona</button>
-            <button className="hover:text-blue-600 transition-colors">Laptopë</button>
-            <button className="hover:text-blue-600 transition-colors">Tableta</button>
-            <button className="hover:text-blue-600 transition-colors">Ora Inteligjente</button>
-            <button className="hover:text-blue-600 transition-colors">Aksesorë</button>
-            <button className="text-red-600 font-bold hover:text-red-500 transition-colors">Ofertat %</button>
-          </div>
-          <div className="flex items-center gap-5 text-zinc-900">
-            <Search size={18} />
-            <div className="relative">
-              <ShoppingBag size={18} />
-              <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">7</span>
-            </div>
-          </div>
+      {/* 1. MINIMALIST OVERLAY NAV */}
+      <nav className="fixed top-0 w-full z-[300] mix-blend-difference px-8 py-6 flex justify-between items-center">
+        <div className="text-xl font-black tracking-[-0.1em]">TITAN</div>
+        <div className="hidden md:flex gap-12 text-[10px] uppercase tracking-[0.4em] font-light">
+          {["Vision", "Systems", "Archive", "Access"].map((item) => (
+            <a key={item} href="#" className="hover:text-[#00FFFF] transition-colors">{item}</a>
+          ))}
+        </div>
+        <div className="flex gap-6 items-center">
+          <Search size={18} strokeWidth={1.5} />
+          <ShoppingBag size={18} strokeWidth={1.5} />
+          <Menu size={18} className="md:hidden" />
         </div>
       </nav>
 
-      {/* 2. HERO SECTIONS */}
-      <section className="w-full">
-        {HERO_SLIDES.map((slide) => (
-          <div key={slide.id} className="relative h-screen w-full flex flex-col items-center justify-start overflow-hidden border-b-8 border-white">
-            <div className="absolute inset-0 z-0">
-              <img src={slide.img} className="w-full h-full object-cover" alt={slide.title} />
-              <div className={`absolute inset-0 ${slide.theme === 'dark' ? 'bg-black/20' : 'bg-white/5'}`} />
-            </div>
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className={`relative z-10 text-center pt-28 px-4 ${slide.theme === 'dark' ? 'text-white' : 'text-[#1d1d1f]'}`}
-            >
-              <span className="text-orange-500 font-extrabold text-sm tracking-[0.2em] mb-3 block">{slide.category}</span>
-              <h1 className="text-5xl md:text-8xl font-bold tracking-tight mb-4">{slide.title}</h1>
-              <p className="text-xl md:text-3xl font-medium mb-2 opacity-90">{slide.subtitle}</p>
-              <p className="text-lg opacity-70 mb-8">{slide.price}</p>
-              <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-                <button className="bg-[#0071e3] text-white px-10 py-3.5 rounded-full font-bold text-lg shadow-lg">Bli Tani</button>
-                <button className={`flex items-center gap-1 text-xl font-medium hover:underline group ${slide.theme === 'dark' ? 'text-blue-400' : 'text-[#0066cc]'}`}>
-                  Shiko Detajet <ChevronRight size={22} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        ))}
+      {/* 2. THE TITAN CORE (HERO PA FOTO) */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        
+        {/* Shkrimi si relief metalik */}
+        <motion.h1 
+          style={{ scale }}
+          className="relative z-10 text-[25vw] font-black tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-900 opacity-20 select-none"
+        >
+          TITAN
+        </motion.h1>
+
+        {/* Bërthama e Energjisë (Zëvendëson 3 telefonat) */}
+        <motion.div 
+          style={{ boxShadow: coreGlow }}
+          animate={{ 
+            scale: [1, 1.1, 1],
+            rotate: [0, 90, 180, 270, 360]
+          }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+          className="absolute z-20 w-32 h-32 md:w-64 md:h-64 border border-[#00FFFF]/30 rounded-full flex items-center justify-center"
+        >
+          <div className="w-[80%] h-[80%] border border-[#00FFFF]/20 rounded-full animate-pulse" />
+          <div className="absolute w-1 h-1 bg-[#00FFFF] rounded-full shadow-[0_0_15px_#00FFFF]" />
+        </motion.div>
+
+        {/* Info Text */}
+        <motion.div 
+          style={{ opacity }}
+          className="absolute bottom-20 z-30 text-center"
+        >
+          <p className="text-[#00FFFF] text-[10px] uppercase tracking-[0.6em] mb-4">Intelligence redefined</p>
+          <h2 className="text-2xl font-light tracking-widest uppercase">The Quantum Series</h2>
+        </motion.div>
       </section>
 
-      {/* 3. KOLEKSIONI I FUNDIT (GRID) */}
-      <section className="py-24 bg-[#f5f5f7] px-6">
-        <div className="max-w-[1200px] mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-12 text-center">Koleksioni i Fundit.</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {NEW_PRODUCTS.map((product) => (
-              <motion.div key={product.id} whileHover={{ y: -10 }} className="bg-white p-6 rounded-[2.5rem] flex flex-col items-center shadow-sm hover:shadow-2xl transition-all duration-500">
-                <div className="relative w-full h-48 mb-6 overflow-hidden rounded-2xl">
-                  <img src={product.img} alt={product.name} className="w-full h-full object-contain" />
-                </div>
-                <h3 className="text-xl font-bold mb-1">{product.name}</h3>
-                <p className="text-blue-600 font-semibold mb-6">{product.price}</p>
-                <button className="w-full py-3 bg-[#f5f5f7] hover:bg-black hover:text-white rounded-full font-bold text-sm transition-colors">Shto në shportë</button>
-              </motion.div>
-            ))}
+      {/* 3. EXPERIENTIAL GRID (JO UI APPLE) */}
+      <section className="px-4 py-4 grid grid-cols-1 md:grid-cols-12 gap-4 h-[150vh] md:h-screen">
+        
+        {/* Material Display */}
+        <div className="md:col-span-8 bg-zinc-950 border border-white/5 relative group overflow-hidden">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?q=80&w=2000')] bg-cover bg-center opacity-30 grayscale group-hover:grayscale-0 transition-all duration-1000" />
+          <div className="relative z-10 p-12 h-full flex flex-col justify-end">
+            <span className="text-[#00FFFF] font-mono text-xs mb-4">// GRADE 5 TITANIUM</span>
+            <h3 className="text-5xl font-bold tracking-tighter max-w-md">Më i lehtë. Më i fortë. Titan.</h3>
+          </div>
+        </div>
+
+        {/* Interaction Block */}
+        <div className="md:col-span-4 bg-[#00FFFF] text-black p-12 flex flex-col justify-between">
+          <div className="space-y-6">
+            <Zap size={40} />
+            <h3 className="text-4xl font-black leading-none uppercase italic">0 to 100%<br/>in 8 min</h3>
+          </div>
+          <button className="w-full py-4 border-b-2 border-black flex justify-between items-center font-bold uppercase tracking-widest text-sm">
+            Reserve Yours <ChevronRight />
+          </button>
+        </div>
+
+        {/* Tech Specs Block */}
+        <div className="md:col-span-4 bg-zinc-900 border border-white/5 p-12">
+          <Globe className="mb-8 opacity-50" />
+          <h4 className="text-xl font-bold mb-4">Neural Network 2.0</h4>
+          <p className="text-zinc-500 text-sm leading-relaxed">Sistemi i parë operativ që mëson dhe përshtatet me ndërgjegjen tuaj.</p>
+        </div>
+
+        <div className="md:col-span-8 bg-white text-black p-12 flex items-center justify-between group cursor-pointer">
+          <h3 className="text-6xl font-black tracking-tighter uppercase group-hover:italic transition-all">Store Alpha</h3>
+          <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 transition-transform">
+            <ChevronRight size={40} />
           </div>
         </div>
       </section>
 
-      {/* 4. SEKSION I RI: BIG BANNER (TITAN VISION) */}
-      <section className="py-20 px-6">
-        <div className="max-w-[1200px] mx-auto relative h-[600px] rounded-[3rem] overflow-hidden group">
-          <img src="https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=1200" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-12 md:p-20 text-white">
-            <h2 className="text-5xl md:text-7xl font-bold mb-4 tracking-tighter italic">TITAN Vision.</h2>
-            <p className="text-xl md:text-2xl max-w-xl opacity-90 mb-8">Mirësevini në epokën e re të realitetit hapësinor. Çdo gjë që shihni tani ka një dimension të ri.</p>
-            <button className="bg-white text-black px-8 py-3 rounded-full font-bold w-fit hover:bg-blue-600 hover:text-white transition-colors">Eksploro Vision</button>
-          </div>
+      {/* 4. DATA FOOTER */}
+      <footer className="py-20 px-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-start gap-12">
+        <div className="space-y-4">
+          <div className="text-2xl font-black tracking-tighter">TITAN</div>
+          <p className="max-w-xs text-zinc-500 text-xs leading-relaxed">
+            Titan Electronics nuk është thjesht një kompani teknologjie. Është një laborator i të ardhmes.
+          </p>
         </div>
-      </section>
-
-      {/* 5. SEKSION I RI: AKSESORËT (Minimal Horizontal Scroll look) */}
-      <section className="py-20 px-6 max-w-[1200px] mx-auto">
-        <div className="flex justify-between items-end mb-10">
-          <h2 className="text-3xl font-bold tracking-tight">Aksesorët e javës.</h2>
-          <button className="text-blue-600 flex items-center gap-1 font-medium hover:underline">Shiko të gjithë <ArrowRight size={16} /></button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {ACCESSORIES.map(acc => (
-            <div key={acc.id} className="flex items-center gap-6 p-6 border border-zinc-100 rounded-3xl hover:bg-[#f5f5f7] transition-colors cursor-pointer group">
-              <img src={acc.img} className="w-24 h-24 object-cover rounded-xl group-hover:scale-110 transition-transform" />
-              <div>
-                <h4 className="font-bold text-lg">{acc.name}</h4>
-                <p className="text-zinc-500">{acc.price}</p>
-                <button className="mt-2 text-blue-600 text-sm font-bold">Bli</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 6. SHËRBIMET E DYQANIT (ZHVENDOSUR NË FUND) */}
-      <section className="py-24 bg-white px-6 border-t border-zinc-100">
-        <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-          <div className="p-8 rounded-3xl bg-[#f5f5f7] hover:shadow-xl transition-shadow">
-            <Truck size={40} className="mb-4 mx-auto text-blue-600" />
-            <h3 className="text-xl font-bold mb-2">Transport Falas</h3>
-            <p className="text-[#86868b] text-sm">Për çdo porosi mbi 100€ në të gjithë Shqipërinë.</p>
+        
+        <div className="grid grid-cols-2 gap-20">
+          <div className="space-y-4">
+            <h5 className="text-[10px] uppercase tracking-widest text-zinc-400">Security</h5>
+            <ul className="text-sm space-y-2 font-medium">
+              <li>Biometrics</li>
+              <li>Encryption</li>
+            </ul>
           </div>
-          <div className="p-8 rounded-3xl bg-[#f5f5f7] hover:shadow-xl transition-shadow">
-            <CreditCard size={40} className="mb-4 mx-auto text-blue-600" />
-            <h3 className="text-xl font-bold mb-2">Pagesë me Këste</h3>
-            <p className="text-[#86868b] text-sm">Mundësi pagese deri në 24 muaj me 0% interes.</p>
-          </div>
-          <div className="p-8 rounded-3xl bg-[#f5f5f7] hover:shadow-xl transition-shadow">
-            <ShieldCheck size={40} className="mb-4 mx-auto text-blue-600" />
-            <h3 className="text-xl font-bold mb-2">Garanci 2-Vjeçare</h3>
-            <p className="text-[#86868b] text-sm">Mbështetje teknike dhe riparime të certifikuara.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. FOOTER */}
-      <footer className="bg-[#f5f5f7] py-16 px-6 border-t border-[#d2d2d7]">
-        <div className="max-w-[1024px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10 text-[12px] text-[#424245]">
-            <div>
-              <h4 className="font-bold text-black mb-4">Dyqani</h4>
-              <ul className="space-y-2"><li>Gjej Dyqanin</li><li>Statusi i Porosisë</li><li>Mënyrat e Pagesës</li></ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-black mb-4">Suporti</h4>
-              <ul className="space-y-2"><li>Qendra e Ndihmës</li><li>Riparimet</li><li>Kontakto Ne</li></ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-black mb-4">Llogaria</h4>
-              <ul className="space-y-2"><li>Menaxho Llogarinë</li><li>Titan Cloud</li><li>Historia e Blerjeve</li></ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-black mb-4">Rreth Nesh</h4>
-              <ul className="space-y-2"><li>Lajmet</li><li>Karriera</li><li>Mjedisi</li></ul>
-            </div>
-          </div>
-          <div className="pt-8 border-t border-[#d2d2d7] text-[11px] text-[#86868b] flex flex-col md:flex-row justify-between">
-            <p>© 2026 Titan Electronics Albania. Të gjitha të drejtat e rezervuara.</p>
-            <div className="flex gap-4 mt-4 md:mt-0"><span>Politika e Privatësisë</span><span>Kushtet e Blerjes</span></div>
+          <div className="space-y-4">
+            <h5 className="text-[10px] uppercase tracking-widest text-zinc-400">Legal</h5>
+            <ul className="text-sm space-y-2 font-medium">
+              <li>Privacy</li>
+              <li>Terms</li>
+            </ul>
           </div>
         </div>
       </footer>
+
+      {/* Noise Effect Overlay */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://media.giphy.com/media/oEI9uWUznW3pS/giphy.gif')]" />
     </main>
   );
 }
