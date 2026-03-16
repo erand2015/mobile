@@ -18,12 +18,19 @@ const PRODUCTS = [
 
 const fadeInUpVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  }
 };
 
 const staggerContainerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  visible: { 
+    opacity: 1, 
+    transition: { staggerChildren: 0.15 } 
+  }
 };
 
 export default function TitanUltimateExperience() {
@@ -32,14 +39,13 @@ export default function TitanUltimateExperience() {
   const [circuitLines, setCircuitLines] = useState<any[]>([]);
 
   useEffect(() => {
-    // Krijojmë 15 vija për të qenë më të dukshme
     const generated = Array.from({ length: 15 }).map((_, i) => ({
       id: i,
       x1: Math.random() * 90,
       y1: Math.random() * 80,
-      length: Math.random() * 300 + 150, // Vija më të gjata
+      length: Math.random() * 300 + 150,
       direction: Math.random() > 0.5 ? 0 : 1,
-      duration: Math.random() * 2 + 1.5, // Më të shpejta
+      duration: Math.random() * 2 + 1.5,
       delay: Math.random() * 4,
     }));
     setCircuitLines(generated);
@@ -52,12 +58,10 @@ export default function TitanUltimateExperience() {
   return (
     <main className="bg-white text-black min-h-screen selection:bg-blue-600/40 font-sans overflow-x-hidden">
       
-      {/* 1. ANNOUNCEMENT BAR */}
       <div className="bg-blue-600 text-black py-2.5 text-center text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] sticky top-0 z-[150] px-4">
         TITAN GLOBAL EVENT 2026 • KODI "FUTURE" PËR ZBRITJE EKSTRA • DËRGESA FALAS NË TË GJITHË BALLKANIN
       </div>
 
-      {/* 2. NAVIGATION */}
       <nav className="sticky top-[30px] md:top-[35px] w-full z-[140] px-4 md:px-8 py-4 md:py-5 flex justify-between items-center backdrop-blur-2xl bg-white/60 border-b border-black/5">
         <div onClick={() => setView("home")} className="text-xl md:text-2xl font-black italic tracking-tighter text-blue-500 cursor-pointer">TITAN.</div>
         <div className="hidden lg:flex gap-8 text-[10px] font-mono uppercase tracking-widest text-zinc-700">
@@ -80,15 +84,12 @@ export default function TitanUltimateExperience() {
         {view === "home" ? (
           <motion.div key="home-view" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             
-            {/* 3. HERO SECTION - ME EFEKT QARKU TE FORTE */}
             <section className="relative h-[80vh] md:h-[90vh] flex items-center justify-center overflow-hidden bg-white">
-              
-              {/* LAYERI I QARKUT (MË I DUKSHËM) */}
               <div className="absolute inset-0 z-0">
                 {circuitLines.map((line) => (
                   <div
                     key={line.id}
-                    className="absolute bg-zinc-100/50" // Vija bazë
+                    className="absolute bg-zinc-100/50"
                     style={{
                       width: line.direction === 0 ? `${line.length}px` : "2px",
                       height: line.direction === 1 ? `${line.length}px` : "2px",
@@ -96,9 +97,8 @@ export default function TitanUltimateExperience() {
                       top: `${line.y1}%`,
                     }}
                   >
-                    {/* RRYMA ELEKTRIKE NEON BLU */}
                     <motion.div
-                      className="absolute bg-blue-500 shadow-[0_0_15px_#2563eb]" // Glow i fortë
+                      className="absolute bg-blue-500 shadow-[0_0_15px_#2563eb]"
                       style={{
                         width: line.direction === 0 ? "80px" : "100%",
                         height: line.direction === 1 ? "80px" : "100%",
@@ -123,7 +123,6 @@ export default function TitanUltimateExperience() {
                 ))}
               </div>
 
-              {/* Gradient overlay për butësi */}
               <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white z-[1]" />
 
               <motion.div 
@@ -148,7 +147,6 @@ export default function TitanUltimateExperience() {
               </motion.div>
             </section>
 
-            {/* 4. KATALOGU (Full) */}
             <section className="py-16 md:py-24 px-4 md:px-6 max-w-[1600px] mx-auto overflow-hidden">
               <motion.div className="flex justify-between items-end mb-12 md:mb-16 border-b border-black/5 pb-8" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeInUpVariants}>
                  <h2 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter text-black">Katalogu Premium</h2>
