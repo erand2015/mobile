@@ -11,7 +11,7 @@ import {
   ShoppingCart, ArrowUpRight, CheckCircle2, Zap, Camera, BatteryCharging, Smartphone, Cpu 
 } from "lucide-react";
 
-// --- 1. STORE (ZUSTAND) ---
+// --- STORE ---
 interface Product { id: number; name: string; price: number; img: string; tag: string; }
 interface CartStore {
   items: Product[];
@@ -26,7 +26,7 @@ const useCartStore = create<CartStore>()(
       set((state) => ({ items: [...state.items, item], notification: `${item.name} u shtua!` }));
       setTimeout(() => set({ notification: null }), 3000);
     },
-  }), { name: 'titan-final-v1' })
+  }), { name: 'titan-mobile-snap-v1' })
 );
 
 const PRODUCTS = [
@@ -40,20 +40,17 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const { addItem, items, notification } = useCartStore();
   
-  // LOGJIKA E NAVBAR-IT (Hide on Scroll)
+  // NAVBAR LOGIC
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
-    if (latest > previous && latest > 150) {
-      setHidden(true); // Scroll poshtë -> Fshihet
-    } else {
-      setHidden(false); // Scroll lart -> Shfaqet
-    }
+    if (latest > previous && latest > 150) setHidden(true);
+    else setHidden(false);
   });
 
-  // Carousel Logic
+  // CAROUSEL PHYSICS
   const carouselRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
@@ -87,7 +84,7 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <main className="bg-[#020202] text-white selection:bg-[#CCFF00] selection:text-black">
+    <main className="bg-[#020202] text-white selection:bg-[#CCFF00] selection:text-black antialiased">
       
       <AnimatePresence>
         {notification && (
@@ -97,7 +94,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* --- SMART NAVBAR --- */}
+      {/* SMART NAVBAR */}
       <motion.nav 
         variants={{ visible: { y: 0 }, hidden: { y: "-100%" } }}
         animate={hidden ? "hidden" : "visible"}
@@ -105,25 +102,20 @@ export default function Home() {
         className="fixed top-0 w-full z-[4000] p-6 md:p-8 flex justify-between items-center bg-black/60 backdrop-blur-xl border-b border-white/5"
       >
         <div className="flex items-center gap-2 font-black italic text-xl tracking-tighter">
-          <div className="w-6 h-6 bg-[#CCFF00] rounded-sm rotate-45 flex items-center justify-center">
-            <Cpu size={14} className="text-black -rotate-45" />
+          <div className="w-5 h-5 bg-[#CCFF00] rounded-sm rotate-45 flex items-center justify-center">
+            <Cpu size={12} className="text-black -rotate-45" />
           </div>
           TITAN<span className="text-[#CCFF00]">LAB</span>
         </div>
-        
-        <div className="flex items-center gap-6">
-          <button className="hidden md:block text-[10px] font-bold uppercase tracking-widest hover:text-[#CCFF00] transition-colors">Store</button>
-          <button className="hidden md:block text-[10px] font-bold uppercase tracking-widest hover:text-[#CCFF00] transition-colors">Compare</button>
-          <button className="relative w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#CCFF00] hover:text-black transition-all">
-            <ShoppingCart size={18} />
-            {items.length > 0 && <span className="absolute -top-1 -right-1 bg-[#CCFF00] text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">{items.length}</span>}
-          </button>
-        </div>
+        <button className="relative w-11 h-11 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#CCFF00] hover:text-black transition-all">
+          <ShoppingCart size={18} />
+          {items.length > 0 && <span className="absolute -top-1 -right-1 bg-[#CCFF00] text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">{items.length}</span>}
+        </button>
       </motion.nav>
 
       {/* HERO */}
       <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#CCFF0012_0%,_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#CCFF0008_0%,_transparent_70%)]" />
         <motion.h1 
           initial={{ letterSpacing: "0.5em", opacity: 0 }}
           animate={{ letterSpacing: "-0.05em", opacity: 1 }}
@@ -132,33 +124,46 @@ export default function Home() {
         >
           CORE
         </motion.h1>
-        <p className="text-[#CCFF00] font-black uppercase tracking-[1em] text-[10px] mt-[-2vw]">Engineering Tomorrow</p>
+        <p className="text-[#CCFF00] font-black uppercase tracking-[1em] text-[10px] mt-[-2vw]">Pure Performance</p>
       </section>
 
-      {/* PRODUCT SECTION */}
-      <section className="py-40 bg-zinc-950 rounded-t-[5rem] border-t border-white/5">
-        <div className="px-10 mb-24 max-w-[1400px] mx-auto">
-          <h2 className="text-8xl font-black italic uppercase leading-[0.85] tracking-tighter">
-            Digital<br/><span className="text-[#CCFF00]">Supremacy.</span>
+      {/* PRODUCT SECTION WITH SCROLL SNAP */}
+      <section className="py-24 md:py-40 bg-zinc-950 rounded-t-[3rem] md:rounded-t-[5rem] border-t border-white/5">
+        <div className="px-8 md:px-10 mb-16 md:mb-24 max-w-[1400px] mx-auto">
+          <h2 className="text-5xl md:text-8xl font-black italic uppercase leading-[0.85] tracking-tighter">
+            Next-Gen<br/><span className="text-[#CCFF00]">Hardware.</span>
           </h2>
         </div>
 
         <div className="relative">
-          <div ref={carouselRef} className="overflow-hidden cursor-grab active:cursor-grabbing px-10">
-            <motion.div ref={trackRef} drag="x" dragConstraints={{ right: 0, left: -carouselWidth }} style={{ x: scrollXSpring }} className="flex gap-10 w-max pb-24">
+          {/* Snap Container */}
+          <div 
+            ref={carouselRef} 
+            className="overflow-x-auto md:overflow-hidden cursor-grab active:cursor-grabbing px-6 md:px-10 no-scrollbar snap-x snap-mandatory flex"
+          >
+            <motion.div 
+              ref={trackRef} 
+              drag="x" 
+              dragConstraints={{ right: 0, left: -carouselWidth }} 
+              style={{ x: scrollXSpring }} 
+              className="flex gap-4 md:gap-10 w-max pb-16 md:pb-24"
+            >
               {PRODUCTS.map((p) => (
-                <div key={p.id} className="w-[450px] h-[650px] bg-[#050505] rounded-[3.5rem] p-12 border border-white/5 group hover:border-[#CCFF00]/30 transition-all duration-700 flex flex-col justify-between overflow-hidden shadow-2xl">
+                <div 
+                  key={p.id} 
+                  className="w-[85vw] md:w-[450px] h-[550px] md:h-[650px] bg-[#050505] rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 border border-white/5 snap-center flex flex-col justify-between shrink-0 group hover:border-[#CCFF00]/30 transition-all duration-700"
+                >
                   <div>
-                    <span className="text-[#CCFF00] text-[10px] font-black tracking-widest opacity-70 group-hover:opacity-100">{p.tag}</span>
-                    <h3 className="text-5xl font-black italic uppercase mt-2 group-hover:text-[#CCFF00] transition-colors">{p.name}</h3>
+                    <span className="text-[#CCFF00] text-[10px] font-black tracking-widest opacity-70 uppercase">{p.tag}</span>
+                    <h3 className="text-3xl md:text-5xl font-black italic uppercase mt-2 group-hover:text-[#CCFF00] transition-colors">{p.name}</h3>
                   </div>
 
-                  <img src={p.img} className="w-full h-72 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110 drop-shadow-[0_0_30px_rgba(204,255,0,0.1)]" alt="" />
+                  <img src={p.img} className="w-full h-56 md:h-72 object-contain grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" alt="" />
 
-                  <div className="flex justify-between items-center border-t border-white/5 pt-8">
-                    <span className="text-4xl font-black italic">{p.price}€</span>
-                    <button onClick={() => addItem(p)} className="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center group-hover:bg-[#CCFF00] transition-all transform active:scale-90">
-                      <ArrowUpRight size={28} />
+                  <div className="flex justify-between items-center border-t border-white/5 pt-6 md:pt-8">
+                    <span className="text-3xl md:text-4xl font-black italic">{p.price}€</span>
+                    <button onClick={() => addItem(p)} className="w-14 h-14 md:w-16 md:h-16 bg-white text-black rounded-full flex items-center justify-center group-hover:bg-[#CCFF00] transition-all active:scale-90">
+                      <ArrowUpRight size={24} />
                     </button>
                   </div>
                 </div>
@@ -166,44 +171,39 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* INDICATOR */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-[350px] h-12 flex items-center bg-white/5 rounded-full border border-white/10">
-              <motion.div 
-                style={{ x: indicatorThumbX, scaleX }} 
-                className="w-16 h-8 bg-[#CCFF00] rounded-full flex items-center justify-center shadow-[0_0_20px_#CCFF0040] z-20"
-              >
-                <div className="w-1 h-3 bg-black/20 rounded-full mx-0.5" />
-                <div className="w-1 h-3 bg-black/20 rounded-full mx-0.5" />
-              </motion.div>
-            </div>
-            <div className="w-[350px] h-[1px] bg-white/10 mt-6 relative">
-              <motion.div style={{ width: scrollProgress }} className="absolute h-full bg-[#CCFF00] shadow-[0_0_15px_#CCFF00]" />
+          {/* INDICATOR (Visible only on desktop or for visual cue) */}
+          <div className="hidden md:flex flex-col items-center">
+            <div className="relative w-[350px] h-10 flex items-center bg-white/5 rounded-full border border-white/10">
+              <motion.div style={{ x: indicatorThumbX, scaleX }} className="w-16 h-7 bg-[#CCFF00] rounded-full z-20 shadow-[0_0_20px_#CCFF0030]" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* TECH SPECS */}
-      <section className="py-40 px-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-[1400px] mx-auto bg-black">
+      {/* SPECS */}
+      <section className="py-24 px-6 md:px-10 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-[1400px] mx-auto">
         {[
           { i: <Zap />, t: "Turbo Charge", d: "Silicon Anode Tech" },
           { i: <Camera />, t: "Pro Optics", d: "Zeiss Integrated" },
           { i: <BatteryCharging />, t: "Eco Core", d: "Zero Carbon Build" },
           { i: <Smartphone />, t: "Titan Glass", d: "Molecular Bond" }
         ].map((s, idx) => (
-          <div key={idx} className="p-10 border border-white/5 bg-zinc-950 rounded-[2rem] hover:bg-[#CCFF00] hover:text-black transition-all group">
-            <div className="mb-6 text-[#CCFF00] group-hover:text-black transition-colors">{s.i}</div>
+          <div key={idx} className="p-8 border border-white/5 bg-zinc-950 rounded-[2rem] hover:bg-[#CCFF00] hover:text-black transition-all">
+            <div className="mb-4 text-[#CCFF00]">{s.i}</div>
             <h4 className="font-black italic uppercase text-lg">{s.t}</h4>
-            <p className="text-[10px] uppercase font-bold opacity-40 group-hover:opacity-100">{s.d}</p>
+            <p className="text-[10px] uppercase font-bold opacity-40">{s.d}</p>
           </div>
         ))}
       </section>
 
       <footer className="py-20 text-center border-t border-white/5 bg-[#020202]">
-        <h2 className="text-[10vw] font-black italic opacity-5 select-none">TITANLAB</h2>
-        <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-[0.5em] mt-4">© 2026 Designed for high performance</p>
+        <h2 className="text-[15vw] font-black italic opacity-5 select-none leading-none">TITANLAB</h2>
       </footer>
+
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </main>
   );
 }
