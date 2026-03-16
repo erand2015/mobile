@@ -55,9 +55,9 @@ export default function TitanUltimateExperience() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-[#020202]" />
         <div className="relative z-10 text-center px-4">
           <motion.h1 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0.01, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
             className="text-[18vw] md:text-[15vw] font-black italic uppercase leading-none tracking-tighter will-change-transform"
           >
             TITAN.
@@ -76,10 +76,10 @@ export default function TitanUltimateExperience() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
           {PRODUCTS.map(p => (
             <motion.div 
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0.01, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              viewport={{ once: true, margin: "200px" }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               key={p.id} 
               className="group bg-zinc-900/20 border border-white/5 rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 hover:bg-zinc-800/30 transition-all will-change-transform"
             >
