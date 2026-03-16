@@ -26,7 +26,7 @@ const useCartStore = create<CartStore>()(
       set((state) => ({ items: [...state.items, item], notification: `${item.name} u shtua!` }));
       setTimeout(() => set({ notification: null }), 3000);
     },
-  }), { name: 'titan-barrel-white' })
+  }), { name: 'titan-barrel-final' })
 );
 
 const PRODUCTS = [
@@ -41,7 +41,6 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const { addItem, items, notification } = useCartStore();
   
-  // NAVBAR HIDE/SHOW LOGIC
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -50,29 +49,23 @@ export default function Home() {
     else setHidden(false);
   });
 
-  // BARREL CAROUSEL LOGIC
   const carouselRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
   
   const x = useMotionValue(0);
-  const scrollXSpring = useSpring(x, { stiffness: 80, damping: 25 });
+  const scrollXSpring = useSpring(x, { stiffness: 100, damping: 30, mass: 0.8 });
   const xVelocity = useVelocity(x);
   
-  // Efektet e Barrel: Zgjatja (Scale) dhe Pjerrësia (Skew) gjatë lëvizjes
-  const scaleX = useSpring(useTransform(xVelocity, [-2000, 0, 2000], [1.3, 1, 1.3]), { stiffness: 300, damping: 25 });
-  const skewX = useSpring(useTransform(xVelocity, [-1500, 1500], [-3, 3]), { stiffness: 150, damping: 25 });
+  // EFEKTI I GOGLËS (Cilindrit) - Zgjatet bazuar në shpejtësinë
+  const scaleX = useSpring(useTransform(xVelocity, [-3000, 0, 3000], [2, 1, 2]), { stiffness: 400, damping: 30 });
+  const skewX = useSpring(useTransform(xVelocity, [-2000, 2000], [-3, 3]), { stiffness: 150, damping: 25 });
   
-  const scrollProgress = useTransform(scrollXSpring, [0, -carouselWidth || -1], ["0%", "100%"]);
   const indicatorThumbX = useTransform(scrollXSpring, [0, -carouselWidth || -1], [0, 280]);
 
   useLayoutEffect(() => {
     if (mounted) {
-      const calc = () => {
-        if (trackRef.current && carouselRef.current) {
-          setCarouselWidth(trackRef.current.scrollWidth - carouselRef.current.offsetWidth);
-        }
-      };
+      const calc = () => trackRef.current && carouselRef.current && setCarouselWidth(trackRef.current.scrollWidth - carouselRef.current.offsetWidth);
       calc(); window.addEventListener("resize", calc);
       return () => window.removeEventListener("resize", calc);
     }
@@ -102,7 +95,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* NAVBAR */}
       <motion.nav 
         variants={{ visible: { y: 0 }, hidden: { y: "-100%" } }}
         animate={hidden ? "hidden" : "visible"}
@@ -121,62 +113,45 @@ export default function Home() {
         </button>
       </motion.nav>
 
-      {/* HERO */}
-      <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-[#F9F9FB]">
-        <motion.h1 
-          initial={{ letterSpacing: "0.1em", opacity: 0 }}
-          animate={{ letterSpacing: "-0.05em", opacity: 1 }}
-          transition={{ duration: 1.2 }}
-          className="text-[28vw] font-[1000] leading-none italic text-black tracking-tighter select-none"
-        >
-          CORE
-        </motion.h1>
-        <p className="text-gray-400 font-black uppercase tracking-[1em] text-[10px] mt-[-2vw]">Engineering Excellence</p>
+      <section className="h-[80vh] flex flex-col items-center justify-center relative bg-[#F9F9FB]">
+        <motion.h1 initial={{ letterSpacing: "0.1em", opacity: 0 }} animate={{ letterSpacing: "-0.05em", opacity: 1 }} transition={{ duration: 1.2 }} className="text-[28vw] font-[1000] leading-none italic text-black tracking-tighter">CORE</motion.h1>
       </section>
 
       {/* BARREL SECTION */}
       <section className="py-24 md:py-40 bg-white rounded-t-[3rem] md:rounded-t-[5rem] overflow-hidden">
         <div className="px-8 md:px-10 mb-16 md:mb-24 max-w-[1400px] mx-auto">
           <h2 className="text-5xl md:text-8xl font-black italic uppercase leading-[0.85] tracking-tighter">
-            Next-Gen<br/><span className="text-gray-300">Barrel.</span>
+            Digital<br/><span className="text-gray-300">Supremacy.</span>
           </h2>
         </div>
 
         <div className="relative">
-          {/* Scroll Container with Snapping for Mobile */}
           <div 
             ref={carouselRef} 
-            className="overflow-x-auto md:overflow-hidden cursor-grab active:cursor-grabbing px-6 md:px-10 no-scrollbar snap-x snap-mandatory flex"
+            className="overflow-visible px-6 md:px-10 no-scrollbar"
+            style={{ touchAction: "pan-y" }}
           >
             <motion.div 
               ref={trackRef} 
               drag="x" 
               dragConstraints={{ right: 0, left: -carouselWidth }} 
+              dragElastic={0.15}
+              dragTransition={{ power: 0.2, timeConstant: 250 }}
               style={{ x: scrollXSpring, skewX }} 
-              className="flex gap-4 md:gap-10 w-max pb-20"
+              className="flex gap-4 md:gap-10 w-max pb-20 cursor-grab active:cursor-grabbing"
             >
               {PRODUCTS.map((p) => (
-                <div 
-                  key={p.id} 
-                  className="w-[85vw] md:w-[450px] h-[550px] md:h-[650px] bg-[#F5F5F7] rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 snap-center flex flex-col justify-between shrink-0 group hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-2xl transition-all duration-700"
-                >
-                  <div className="relative z-10">
+                <div key={p.id} className="w-[82vw] md:w-[450px] h-[520px] md:h-[650px] bg-[#F5F5F7] rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 flex flex-col justify-between shrink-0 snap-center group hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-2xl transition-all duration-700 select-none">
+                  <div className="pointer-events-none">
                     <span className="text-gray-400 text-[10px] font-black tracking-widest uppercase">{p.tag}</span>
-                    <h3 className="text-3xl md:text-5xl font-black italic uppercase mt-2 group-hover:text-black transition-colors">{p.name}</h3>
+                    <h3 className="text-3xl md:text-5xl font-black italic uppercase mt-2">{p.name}</h3>
                   </div>
-
-                  {/* Foto me efekt lëvizjeje brenda kartës */}
-                  <motion.div className="relative h-64 md:h-80 flex items-center justify-center">
-                    <img 
-                      src={p.img} 
-                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-1000 ease-out drop-shadow-2xl" 
-                      alt={p.name} 
-                    />
-                  </motion.div>
-
-                  <div className="flex justify-between items-center border-t border-gray-200 pt-6 md:pt-8 relative z-10">
+                  <div className="relative h-64 md:h-80 flex items-center justify-center pointer-events-none">
+                    <img src={p.img} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-1000" alt="" />
+                  </div>
+                  <div className="flex justify-between items-center border-t border-gray-200 pt-6 md:pt-8">
                     <span className="text-3xl md:text-4xl font-black italic text-black">{p.price}€</span>
-                    <button onClick={() => addItem(p)} className="w-14 h-14 md:w-16 md:h-16 bg-black text-white rounded-full flex items-center justify-center hover:bg-[#CCFF00] hover:text-black transition-all active:scale-90">
+                    <button onClick={(e) => { e.stopPropagation(); addItem(p); }} className="w-14 h-14 md:w-16 md:h-16 bg-black text-white rounded-full flex items-center justify-center hover:bg-[#CCFF00] hover:text-black transition-all active:scale-90">
                       <ArrowUpRight size={24} />
                     </button>
                   </div>
@@ -185,48 +160,23 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* APPLE-STYLE INDICATOR */}
+          {/* RIKTHIMI I GOGLËS (THE EPIC INDICATOR) */}
           <div className="flex flex-col items-center mt-4">
-            <div className="relative w-[350px] h-12 flex items-center bg-gray-50 rounded-full border border-gray-100 px-1 shadow-inner">
+            <div className="relative w-[350px] h-10 flex items-center bg-gray-50 rounded-full border border-gray-100 px-1 shadow-inner overflow-hidden">
               <motion.div 
                 style={{ x: indicatorThumbX, scaleX }} 
-                className="w-16 h-8 bg-black rounded-full flex items-center justify-center z-20 shadow-lg"
+                className="w-14 h-6 bg-black rounded-full flex items-center justify-center z-20 shadow-lg origin-center"
               >
-                <div className="w-1 h-3 bg-[#CCFF00] rounded-full mx-0.5 opacity-50" />
-                <div className="w-1 h-3 bg-[#CCFF00] rounded-full mx-0.5 opacity-50" />
+                <div className="w-1 h-2 bg-[#CCFF00] rounded-full mx-0.5 opacity-40" />
+                <div className="w-1 h-2 bg-[#CCFF00] rounded-full mx-0.5 opacity-40" />
               </motion.div>
-              
-              {/* Progress Line */}
-              <div className="absolute bottom-[-10px] left-0 w-full h-[1px] bg-gray-100">
-                <motion.div 
-                  style={{ width: scrollProgress }} 
-                  className="h-full bg-black" 
-                />
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SPECS */}
-      <section className="py-24 px-6 md:px-10 grid grid-cols-1 md:grid-cols-4 gap-4 max-w-[1400px] mx-auto">
-        {[
-          { i: <Zap />, t: "Turbo Charge", d: "Silicon Anode Tech" },
-          { i: <Camera />, t: "Pro Optics", d: "Zeiss Integrated" },
-          { i: <BatteryCharging />, t: "Eco Core", d: "Zero Carbon Build" },
-          { i: <Smartphone />, t: "Titan Glass", d: "Molecular Bond" }
-        ].map((s, idx) => (
-          <div key={idx} className="p-10 bg-gray-50 rounded-[2.5rem] border border-gray-100 hover:bg-white hover:shadow-xl transition-all group">
-            <div className="mb-6 text-gray-300 group-hover:text-black transition-colors">{s.i}</div>
-            <h4 className="font-black italic uppercase text-lg text-black">{s.t}</h4>
-            <p className="text-[10px] uppercase font-bold text-gray-400">{s.d}</p>
-          </div>
-        ))}
-      </section>
-
-      <footer className="py-32 text-center border-t border-gray-100 bg-[#F9F9FB]">
-        <h2 className="text-[15vw] font-black italic text-black opacity-[0.03] select-none leading-none">TITANLAB</h2>
-        <p className="text-gray-400 text-[10px] font-black tracking-[0.5em] uppercase">Built for the future</p>
+      <footer className="py-24 text-center border-t border-gray-100">
+         <p className="text-gray-400 text-[10px] font-black tracking-[0.5em] uppercase">Built for the future</p>
       </footer>
 
       <style jsx global>{`
