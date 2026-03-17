@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Eye } from "lucide-react";
 import React from "react";
 
-// Definojmë një interface të thjeshtë për TypeScript
+// RREGULLIMI: Lejojmë ID-në të jetë edhe string (p.sh. "p1")
 interface Product {
-  id: number;
+  id: string | number; 
   name: string;
   image: string;
   price: string | number;

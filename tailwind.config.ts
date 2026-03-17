@@ -4,19 +4,19 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}", // Shtuar për siguri
+    "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#050505',        // Pak më i zi se 0a0a0a për kontrast OLED
+          DEFAULT: '#050505',
           100: '#1a1a1a',
           900: '#000000',
         },
         accent: {
-          DEFAULT: '#CCFF00',        // Titan-Lime
+          DEFAULT: '#CCFF00',
           glow: 'rgba(204, 255, 0, 0.4)',
         },
         titan: {
@@ -26,7 +26,6 @@ export default {
       },
 
       fontFamily: {
-        // Sigurohemi që fallbacks janë të saktë
         sans: ['var(--font-satoshi)', 'Inter', 'system-ui', 'sans-serif'],
         display: ['var(--font-clash)', 'Space Grotesk', 'sans-serif'],
       },
@@ -34,7 +33,7 @@ export default {
       boxShadow: {
         'card': '0 20px 40px -15px rgba(0, 0, 0, 0.9)',
         'titan-glow': '0 0 40px -5px rgba(204, 255, 0, 0.35)',
-        'inner-light': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)', // Për butona premium
+        'inner-light': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)',
       },
 
       animation: {
@@ -50,7 +49,7 @@ export default {
 
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0', filter: 'blur(10px)' }, // Efekt blur gjatë hyrjes
+          '0%': { opacity: '0', filter: 'blur(10px)' },
           '100%': { opacity: '1', filter: 'blur(0)' },
         },
         slideUp: {
@@ -63,7 +62,7 @@ export default {
         },
         'gradient-flow': {
           '0%': { 'background-position': '0% 50%' },
-          '100%': { 'background-position': '200% 50%' }, // Më i lëmuar
+          '100%': { 'background-position': '200% 50%' },
         },
         marquee: {
           from: { transform: "translateX(0)" },
@@ -81,7 +80,8 @@ export default {
     },
   },
   plugins: [
-    function ({ addUtilities }) {
+    // RREGULLIMI: Shtuam ': any' për të kaluar gabimin e TypeScript
+    function ({ addUtilities }: any) {
       addUtilities({
         '.preserve-3d': { 'transform-style': 'preserve-3d' },
         '.backface-hidden': { 'backface-visibility': 'hidden' },
@@ -95,7 +95,7 @@ export default {
           'background-clip': 'text',
           '-webkit-background-clip': 'text',
           '-webkit-text-fill-color': 'transparent',
-          'background-image': 'linear-gradient(to b, #CCFF00, #99CC00)',
+          'background-image': 'linear-gradient(to bottom, #CCFF00, #99CC00)',
         },
       });
     },

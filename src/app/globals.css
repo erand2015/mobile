@@ -18,25 +18,35 @@
   }
 }
 
-/* Rregullimi për Mobile: Ndalon lëvizjen anësore të padëshiruar */
+/* Rregullimi për Mobile */
 html, body {
   max-width: 100vw;
   overflow-x: hidden;
-  -webkit-text-size-adjust: 100%; /* Fix për tekstin në iOS */
+  -webkit-text-size-adjust: 100%;
 }
 
-html:has(.fixed.z-\[2000\]) {
+/* Fix për bllokimin e scroll-it */
+html:has(.fixed.z-\[9999\], .fixed.z-\[1000000\]) {
   overflow: hidden;
 }
 
 @layer base {
-  * { cursor: none !important; }
+  /* 1. Fshehim kursorin kudo si parazgjedhje */
+  * { 
+    cursor: none; 
+  }
+
+  /* 2. RREGULLI TOTAL: Kthejmë miun te tabela e kërkimit */
+  /* Përdorim !important për të mposhtur çdo stil tjetër inline ose librari */
+  [data-search-modal="true"],
+  [data-search-modal="true"] * {
+    cursor: auto !important;
+  }
 
   body {
     @apply bg-[#050505] text-white antialiased selection:bg-[#CCFF00] selection:text-black;
   }
 
-  /* Tipografia Fluide: Më e vogël në mobile, gjigande në desktop */
   h1 { @apply text-4xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
   h2 { @apply text-3xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
   h3 { @apply text-2xl md:text-3xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }

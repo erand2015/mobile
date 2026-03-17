@@ -25,103 +25,104 @@ export default function Home() {
       <NewsletterPopup /> 
       <SalesNotifier /> 
 
-      {/* 1. Hero */}
-      <section className="relative flex min-h-[100svh] w-full flex-col items-center justify-center">
+      {/* 1. Hero Section - Shtuar hapsirë për Navbar-in e ri */}
+      <section className="relative flex min-h-[100svh] w-full flex-col items-center justify-center pt-20">
         <Hero />
         <RetroGrid className="opacity-[0.1] md:opacity-[0.15]" />
         <div className="absolute bottom-0 left-0 h-32 w-full bg-gradient-to-t from-[#050505] to-transparent z-20" />
       </section>
 
-      {/* 2. Marquee Social Proof */}
-      <div className="relative border-y border-white/5 bg-zinc-950/20 py-10">
+      {/* 2. Brand Marquee - Social Proof */}
+      <div className="relative border-y border-white/5 bg-zinc-950/20 py-12 overflow-hidden">
         <Marquee pauseOnHover className="[--duration:40s]">
           {brands.map((brand) => (
-            <span key={brand} className="mx-8 text-2xl font-black opacity-10 hover:opacity-100 hover:text-[#CCFF00] transition-all uppercase italic">
+            <span key={brand} className="mx-12 text-3xl font-black opacity-10 hover:opacity-100 hover:text-[#CCFF00] transition-all cursor-default uppercase italic tracking-tighter">
               {brand}
             </span>
           ))}
         </Marquee>
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#050505] z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-[#050505] z-10" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#050505] z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#050505] z-10" />
       </div>
 
       {/* 3. Kategoritë Bento Grid */}
-      <section className="container mx-auto px-4 py-20 md:py-32">
-        <div className="mb-16 text-center space-y-4">
+      <section className="container mx-auto px-6 py-24 md:py-32">
+        <div className="mb-20 text-center space-y-4">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter"
+            className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter leading-none"
           >
-            ZGJIDH <span className="text-[#CCFF00]">KATEGORINË</span>
+            ZGJIDH <span className="text-[#CCFF00] drop-shadow-[0_0_15px_rgba(204,255,0,0.2)]">KATEGORINË</span>
           </motion.h2>
-          <p className="text-zinc-500 font-bold uppercase tracking-[0.3em] text-[10px]">Eksploro ekosistemin tonë</p>
+          <p className="text-zinc-500 font-bold uppercase tracking-[0.4em] text-[10px]">Eksploro ekosistemin tonë teknologjik</p>
         </div>
         <CategorySection />
       </section>
 
-      {/* 4. Tech Specs (Sticky Scroll Section) */}
+      {/* 4. Tech Specs (Sticky Scroll) */}
       <TechSpecs />
 
-      {/* 5. Product Showcase */}
-      <section id="koleksioni" className="relative z-50 py-24 md:py-40 bg-[#050505]">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] bg-[#CCFF00]/5 blur-[120px] rounded-full pointer-events-none" />
+      {/* 5. Product Showcase - Koleksioni Kryesor */}
+      <section id="koleksioni" className="relative z-40 py-32 md:py-48 bg-[#050505]">
+        {/* Glow i sfondit */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] bg-[#CCFF00]/5 blur-[150px] rounded-full pointer-events-none" />
         
-        <div className="container mx-auto px-4 md:px-6">
-           <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="container mx-auto px-6">
+           <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter italic">
+                <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter italic">
                   Koleksioni <span className="text-[#CCFF00]">2026</span>
                 </h2>
-                <div className="h-1 w-24 bg-[#CCFF00] mt-4" />
-                <p className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] mt-4">Pajisje të kuruara për performancë maksimale</p>
+                <div className="h-1.5 w-32 bg-[#CCFF00] mt-6" />
+                <p className="text-zinc-500 font-bold uppercase tracking-[0.2em] text-[11px] mt-6">
+                  Pajisje të kuruara për performancë maksimale
+                </p>
               </motion.div>
               
-              <div className="h-[1px] flex-1 bg-white/5 hidden md:block mb-4 mx-12" />
-              
-              <Link href="/shop" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-[#CCFF00] transition-colors mb-4">
-                Eksploro të gjitha —&gt;
+              <Link href="/shop" className="group flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-all mb-4">
+                Eksploro të gjitha 
+                <span className="text-[#CCFF00] group-hover:translate-x-2 transition-transform">—&gt;</span>
               </Link>
            </div>
            
-           <motion.div
-             initial={{ opacity: 0, y: 40 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.7 }}
-             viewport={{ once: true }}
-           >
-             <ProductShowcase />
-           </motion.div>
+           <ProductShowcase />
         </div>
       </section>
 
-      {/* --- SEKSIONI I RI: CHECKOUT FORM --- */}
-      <section className="relative z-50 bg-zinc-950/50 border-y border-white/5 py-24">
-        <div className="absolute top-0 left-0 w-full h-full bg-[#CCFF00]/2 pointer-events-none" />
-        <CheckoutForm />
+      {/* 6. Checkout Section - E integruar me hapsirë të mjaftueshme */}
+      <section className="relative z-40 bg-zinc-950/50 border-y border-white/5 py-32">
+        <div className="absolute top-0 left-0 w-full h-full bg-[#CCFF00]/[0.01] pointer-events-none" />
+        <div className="container mx-auto px-6">
+            <div className="mb-16 text-center">
+                <h3 className="text-3xl font-black uppercase italic tracking-widest">Përfundo Porosinë</h3>
+                <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.3em] mt-2">Siguri maksimale në çdo blerje</p>
+            </div>
+            <CheckoutForm />
+        </div>
       </section>
 
-      {/* 6. Footer */}
-      <footer className="relative border-t border-white/5 bg-black py-20 px-6 overflow-hidden">
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="flex flex-col items-center md:items-start gap-2">
-            <div className="text-2xl font-black italic tracking-tighter">
-              TITAN<span className="text-[#CCFF00]">CORE</span>
+      {/* 7. Footer */}
+      <footer className="relative border-t border-white/5 bg-black py-24 px-6 overflow-hidden">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+          <div className="flex flex-col items-center md:items-start gap-3">
+            <div className="text-3xl font-black italic tracking-tighter">
+              CELLUX<span className="text-[#CCFF00]">CORE</span>
             </div>
-            <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-[0.3em]">Innovation. Speed. Future.</p>
+            <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.4em]">Innovation. Speed. Future.</p>
           </div>
 
-          <p className="text-zinc-700 text-[9px] font-bold">© 2026 TITAN CORE LABS.</p>
+          <p className="text-zinc-800 text-[10px] font-bold tracking-widest italic">© 2026 CELLUX LABS. Të gjitha të drejtat të rezervuara.</p>
 
-          <div className="flex gap-8 text-[10px] font-black uppercase tracking-widest text-zinc-500">
-            <Link href="/contact" className="hover:text-[#CCFF00] transition-colors">Support</Link>
-            <Link href="#" className="hover:text-[#CCFF00] transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-[#CCFF00] transition-colors">Terms</Link>
+          <div className="flex gap-10 text-[11px] font-black uppercase tracking-widest text-zinc-500">
+            <Link href="/support" className="hover:text-[#CCFF00] transition-colors">Support</Link>
+            <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="#" className="hover:text-white transition-colors">Terms</Link>
           </div>
         </div>
       </footer>
