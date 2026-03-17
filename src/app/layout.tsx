@@ -26,7 +26,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const mouseRef = useRef<HTMLDivElement>(null);
+  // ZGJIDHJA: Ndryshimi i tipit nga HTMLDivElement në HTMLBodyElement
+  const mouseRef = useRef<HTMLBodyElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -52,7 +53,7 @@ export default function RootLayout({
           className="pointer-events-none fixed inset-0 z-0 transition duration-300 opacity-40"
           style={{
             background: `radial-gradient(600px at var(--x, 0) var(--y, 0), rgba(204, 255, 0, 0.08), transparent 80%)`
-          }}
+          } as React.CSSProperties} // Shtohet kjo për të evituar gabimet e stileve dinamike në TS
         />
 
         <ScrollProgress />
