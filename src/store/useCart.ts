@@ -1,3 +1,4 @@
+"use client";
 import { create } from 'zustand';
 
 interface CartItem {
@@ -16,6 +17,7 @@ interface CartStore {
   removeItem: (id: number) => void;
   updateQuantity: (id: number, delta: number) => void;
   applyDiscount: (code: string) => boolean; // Kthen true nëse kodi është i saktë
+  clearCart: () => void; // <--- U SHTUA KËTU
   openCart: () => void;
   closeCart: () => void;
 }
@@ -62,4 +64,7 @@ export const useCart = create<CartStore>((set) => ({
     }
     return false;
   },
+
+  // FUNKSIONI QË ZGJIDH GABIMIN NË VERCEL
+  clearCart: () => set({ items: [], discount: 0 }), 
 }));
