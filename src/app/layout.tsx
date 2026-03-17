@@ -1,8 +1,12 @@
 "use client"; // E bëjmë layout-in client-side për të kapur lëvizjen e miut
+
 import { Space_Grotesk, Inter } from 'next/font/google';
 import './globals.css';
 import { useEffect, useRef } from 'react';
-import { Navbar } from '@/components/shared/navbar';
+
+// ZGJIDHJA: Importohet pa kllapa gjarpëruese sepse është eksportuar si 'default'
+import Navbar from '@/components/shared/navbar';
+
 import { PreLoader } from '@/components/shared/pre-loader';
 import { CustomCursor } from '@/components/shared/custom-cursor';
 import { ScrollProgress } from '@/components/shared/scroll-progress';
@@ -26,8 +30,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // ZGJIDHJA: Ndryshimi i tipit nga HTMLDivElement në HTMLBodyElement
-  const mouseRef = useRef<HTMLBodyElement>(null);
+  const mouseRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -53,13 +56,15 @@ export default function RootLayout({
           className="pointer-events-none fixed inset-0 z-0 transition duration-300 opacity-40"
           style={{
             background: `radial-gradient(600px at var(--x, 0) var(--y, 0), rgba(204, 255, 0, 0.08), transparent 80%)`
-          } as React.CSSProperties} // Shtohet kjo për të evituar gabimet e stileve dinamike në TS
+          }}
         />
 
         <ScrollProgress />
         <BackToTop />
         <CustomCursor />
         <PreLoader />
+        
+        {/* Thirrja e Navbar-it */}
         <Navbar />
 
         <div className="relative z-10 flex min-h-screen flex-col">
