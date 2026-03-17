@@ -4,16 +4,14 @@ import Link from 'next/link';
 import { ShoppingCart, Search, Menu, X } from 'lucide-react';
 import { useCart } from '@/store/useCart'; 
 import { useState } from 'react';
-
-// ZGJIDHJA E GABIMIT TË IMPORTIT:
-// Nëse skedari ndodhet te src/components/shop/cart-drawer.tsx
 import { CartDrawer } from '@/components/shop/cart-drawer';
 
-// NËSE skedari ndodhet te src/components/cart/CartDrawer.tsx (shkronja të mëdha), përdor këtë:
-// import { CartDrawer } from '@/components/cart/CartDrawer';
-
 export default function Navbar() {
-  const { items, openCart } = useCart();
+  // Përdorim store-in për të dhënat e produkteve
+  const { items } = useCart();
+  
+  // Kontrolli lokal për gjendjen e modalëve (Zgjidhja e gabimit të build-it)
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
@@ -34,12 +32,13 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-6">
-            <div className="relative group">
+            <div className="relative group text-white">
               <Search className="w-6 h-6 cursor-pointer hover:text-[#CCFF00] transition text-zinc-400" />
             </div>
 
+            {/* BUTONI I KOSHIT: Tani hap state-in lokal */}
             <button 
-              onClick={openCart} 
+              onClick={() => setIsCartOpen(true)} 
               className="relative flex items-center gap-2 hover:text-[#CCFF00] transition text-zinc-400"
             >
               <ShoppingCart className="w-6 h-6" />
@@ -74,7 +73,11 @@ export default function Navbar() {
         )}
       </nav>
 
-      <CartDrawer />
+      {/* RREGULLIMI FINAL: I kalojmë props-et që kërkon CartDrawer */}
+      <CartDrawer 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+      />
     </>
   );
 }
