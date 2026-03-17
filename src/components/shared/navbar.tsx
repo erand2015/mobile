@@ -1,21 +1,25 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { ShoppingCart, Search, Menu } from "lucide-react";
+// Përdorim alias-in @/ për siguri dhe sigurohemi që emri i skedarit është i saktë
 import { CartDrawer } from "@/components/shop/cart-drawer";
 import { SearchModal } from "@/components/shared/search-modal";
 import { MobileMenu } from "@/components/shared/mobile-menu";
 import { useCart } from "@/store/useCart";
 import { motion, useAnimation } from "framer-motion";
-import Link from "next/link"; // Importo Link për navigim të shpejtë
+import Link from "next/link";
 
 export const Navbar = () => {
+  // Kontrolli lokal për hapjen e Drawer-ave
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
+  // Marrim të dhënat nga Zustand store
   const items = useCart((state) => state.items);
   const controls = useAnimation();
 
+  // Animacioni i koshit kur shtohet një produkt
   useEffect(() => {
     if (items.length > 0) {
       controls.start({
@@ -51,16 +55,23 @@ export const Navbar = () => {
             </button>
             
             {/* CART */}
-            <button onClick={() => setIsCartOpen(true)} className="relative flex items-center text-zinc-400 hover:text-[#CCFF00] transition-all">
+            <button 
+              onClick={() => setIsCartOpen(true)} 
+              className="relative flex items-center text-zinc-400 hover:text-[#CCFF00] transition-all"
+            >
               <motion.div animate={controls}>
                 <ShoppingCart size={20} strokeWidth={2.5} />
               </motion.div>
-              <motion.span 
-                key={items.length} 
-                className="absolute -right-2.5 -top-2.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#CCFF00] text-[9px] font-black text-black"
-              >
-                {items.length}
-              </motion.span>
+              {items.length > 0 && (
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  key={items.length} 
+                  className="absolute -right-2.5 -top-2.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#CCFF00] text-[9px] font-black text-black"
+                >
+                  {items.length}
+                </motion.span>
+              )}
             </button>
 
             {/* MOBILE MENU TRIGGER */}
@@ -71,6 +82,7 @@ export const Navbar = () => {
         </div>
       </nav>
 
+      {/* Komponentët modalë */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
