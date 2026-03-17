@@ -1,12 +1,10 @@
-"use client"; // E bëjmë layout-in client-side për të kapur lëvizjen e miut
+"use client";
 
 import { Space_Grotesk, Inter } from 'next/font/google';
 import './globals.css';
 import { useEffect, useRef } from 'react';
 
-// ZGJIDHJA: Importohet pa kllapa gjarpëruese sepse është eksportuar si 'default'
 import Navbar from '@/components/shared/navbar';
-
 import { PreLoader } from '@/components/shared/pre-loader';
 import { CustomCursor } from '@/components/shared/custom-cursor';
 import { ScrollProgress } from '@/components/shared/scroll-progress';
@@ -30,14 +28,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const mouseRef = useRef<HTMLDivElement>(null);
+  // Përcaktojmë ref-in për div-in mbështjellës
+  const mainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (mouseRef.current) {
+      if (mainRef.current) {
         const { clientX, clientY } = e;
-        mouseRef.current.style.setProperty('--x', `${clientX}px`);
-        mouseRef.current.style.setProperty('--y', `${clientY}px`);
+        // Variablat CSS aplikohen te ky div
+        mainRef.current.style.setProperty('--x', `${clientX}px`);
+        mainRef.current.style.setProperty('--y', `${clientY}px`);
       }
     };
 
@@ -47,34 +47,35 @@ export default function RootLayout({
 
   return (
     <html lang="sq" className="scroll-smooth cursor-none" suppressHydrationWarning>
-      <body 
-        ref={mouseRef}
-        className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased bg-[#050505] text-white min-h-screen overflow-x-hidden cursor-none relative`}
-      >
-        {/* 1. Spotlight Mouse Glow Premium */}
-        <div 
-          className="pointer-events-none fixed inset-0 z-0 transition duration-300 opacity-40"
-          style={{
-            background: `radial-gradient(600px at var(--x, 0) var(--y, 0), rgba(204, 255, 0, 0.08), transparent 80%)`
-          }}
-        />
-
-        <ScrollProgress />
-        <BackToTop />
-        <CustomCursor />
-        <PreLoader />
+      <body className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased bg-[#050505] text-white min-h-screen overflow-x-hidden cursor-none relative`}>
         
-        {/* Thirrja e Navbar-it */}
-        <Navbar />
+        {/* ZGJIDHJA: Përdorim një div mbështjellës me ref në vend të body */}
+        <div ref={mainRef} className="relative min-h-screen w-full">
+          
+          {/* 1. Spotlight Mouse Glow Premium */}
+          <div 
+            className="pointer-events-none fixed inset-0 z-0 transition duration-300 opacity-40"
+            style={{
+              background: `radial-gradient(600px at var(--x, 0) var(--y, 0), rgba(204, 255, 0, 0.08), transparent 80%)`
+            }}
+          />
 
-        <div className="relative z-10 flex min-h-screen flex-col">
-          <main className="flex-1">
-            {children}
-          </main>
+          <ScrollProgress />
+          <BackToTop />
+          <CustomCursor />
+          <PreLoader />
+          
+          <Navbar />
+
+          <div className="relative z-10 flex min-h-screen flex-col">
+            <main className="flex-1">
+              {children}
+            </main>
+          </div>
+
+          {/* Noise Overlay Premium */}
+          <div className="pointer-events-none fixed inset-0 z-[90] opacity-[0.03] mix-blend-overlay [background-image:url('https://grainy-gradients.vercel.app/noise.svg')]" />
         </div>
-
-        {/* Noise Overlay Premium */}
-        <div className="pointer-events-none fixed inset-0 z-[90] opacity-[0.03] mix-blend-overlay [background-image:url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html>
   );
