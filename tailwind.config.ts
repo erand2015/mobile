@@ -4,94 +4,100 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}", // Shtuar për siguri
   ],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#00f0ff',     // cyan neon – shumë i mirë për tech
-          50:  '#e6ffff',
-          100: '#ccffff',
-          200: '#a5f3fc',
-          300: '#67e8f9',
-          400: '#22d3ee',
-          500: '#00f0ff',
-          600: '#00d4e6',
-          700: '#00b3c2',
-          800: '#0891b2',
-          900: '#0e7490',
+          DEFAULT: '#050505',        // Pak më i zi se 0a0a0a për kontrast OLED
+          100: '#1a1a1a',
+          900: '#000000',
         },
         accent: {
-          DEFAULT: '#7c3aed',     // violet – perfekt si theks
-          50:  '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#7c3aed',
-          600: '#6d28d9',
-          700: '#5b21b6',
-          800: '#4c1d95',
-          900: '#3b1a78',
+          DEFAULT: '#CCFF00',        // Titan-Lime
+          glow: 'rgba(204, 255, 0, 0.4)',
         },
-        tech: {
-          dark:    '#0a0a0f',
-          darker:  '#050509',
-          gray:    '#1e1e2e',
-          light:   '#e0f7ff',
-          muted:   '#334155',
-        },
-        danger:  '#ff3366',
-        success: '#00ff9d',
-        warning: '#fbbf24',
-        info:    '#60a5fa',
+        titan: {
+          lime: '#CCFF00',
+          dark: '#99CC00',
+        }
       },
 
       fontFamily: {
-        sans:    ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Manrope', 'Inter', 'sans-serif'],
-        mono:    ['JetBrains Mono', 'monospace'],  // shumë i dobishëm për specs/kod
+        // Sigurohemi që fallbacks janë të saktë
+        sans: ['var(--font-satoshi)', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['var(--font-clash)', 'Space Grotesk', 'sans-serif'],
       },
 
       boxShadow: {
-        'tech-glow':     '0 0 35px 5px rgba(0, 240, 255, 0.3)',
-        'purple-glow':   '0 0 40px 8px rgba(124, 58, 237, 0.35)',
-        'cyan-glow-sm':  '0 0 20px 2px rgba(0, 240, 255, 0.2)',
-        'card-hover':    '0 25px 50px -12px rgba(0, 240, 255, 0.15)',
-      },
-
-      backgroundImage: {
-        'tech-radial':   'radial-gradient(circle at 50% 50%, rgba(0,240,255,0.08) 0%, transparent 70%)',
-        'gradient-tech': 'linear-gradient(135deg, #0a0a0f 0%, #1e1e2e 50%, #0a0a0f 100%)',
+        'card': '0 20px 40px -15px rgba(0, 0, 0, 0.9)',
+        'titan-glow': '0 0 40px -5px rgba(204, 255, 0, 0.35)',
+        'inner-light': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)', // Për butona premium
       },
 
       animation: {
-        "gradient-flow": "gradient-flow 7s ease infinite",
-        float:           "float 6s ease-in-out infinite",
-        "pulse-glow":    "pulse-glow 2.5s ease-in-out infinite",
-        "shine":         "shine 3s linear infinite",      // për efekte shine në butona/kartela
+        'fade-in': 'fadeIn 0.8s ease-out forwards',
+        'slide-up': 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'float': 'float 5s ease-in-out infinite',
+        'gradient-flow': 'gradient-flow 6s linear infinite',
+        'marquee': "marquee var(--duration, 30s) linear infinite",
+        'marquee-vertical': "marquee-vertical var(--duration, 30s) linear infinite",
+        'grid': "grid 20s linear infinite",
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
 
       keyframes: {
-        "gradient-flow": {
-          "0%, 100%": { "background-position": "0% 50%" },
-          "50%":      { "background-position": "100% 50%" },
+        fadeIn: {
+          '0%': { opacity: '0', filter: 'blur(10px)' }, // Efekt blur gjatë hyrjes
+          '100%': { opacity: '1', filter: 'blur(0)' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(40px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%":      { transform: "translateY(-12px)" },
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(-15px) scale(1.02)' },
         },
-        "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(0, 240, 255, 0.4)" },
-          "70%":      { boxShadow: "0 0 0 25px rgba(0, 240, 255, 0)" },
+        'gradient-flow': {
+          '0%': { 'background-position': '0% 50%' },
+          '100%': { 'background-position': '200% 50%' }, // Më i lëmuar
         },
-        shine: {
-          "0%":   { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap, 1rem)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap, 1rem)))" },
+        },
+        grid: {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
         },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.preserve-3d': { 'transform-style': 'preserve-3d' },
+        '.backface-hidden': { 'backface-visibility': 'hidden' },
+        '.text-gradient': {
+          'background-clip': 'text',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          'background-image': 'linear-gradient(to bottom, #fff, #666)',
+        },
+        '.titan-gradient': {
+          'background-clip': 'text',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          'background-image': 'linear-gradient(to b, #CCFF00, #99CC00)',
+        },
+      });
+    },
+  ],
 };

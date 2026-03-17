@@ -8,16 +8,20 @@ interface LenisWrapperProps {
   children: ReactNode;
 }
 
-export function LenisWrapper({ children }: LenisWrapperProps) {
+export default function LenisWrapper({ children }: LenisWrapperProps) {   // ← KËTU duhet të jetë "export default"
   useEffect(() => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+      || window.innerWidth <= 768;
+
+    if (isMobile) {
+      return; // Disable Lenis në celular për scroll nativ
+    }
+
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      // smoothTouch: false,  ← HIQET KËTU – nuk ekziston më në opsionet aktuale
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
+      wheelMultiplier: 0.8,
     });
 
     function raf(time: number) {
@@ -27,10 +31,7 @@ export function LenisWrapper({ children }: LenisWrapperProps) {
 
     requestAnimationFrame(raf);
 
-    // Cleanup
-    return () => {
-      lenis.destroy();
-    };
+    return () => lenis.destroy();
   }, []);
 
   return <>{children}</>;

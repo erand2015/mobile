@@ -1,102 +1,49 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@theme {
+  --color-accent: #CCFF00;
+  --color-primary: #050505;
+  --font-sans: var(--font-satoshi), ui-sans-serif, system-ui;
+  --font-display: var(--font-clash), ui-serif, Georgia;
+  --animate-marquee: marquee var(--duration) linear infinite;
+  --animate-grid: grid 20s linear infinite;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
-  --font-mono: var(--font-geist-mono);
-  
-  --color-gold: oklch(0.75 0.12 60); 
-  --color-cyan-vivid: oklch(0.7 0.2 190); /* Ngjyra për çipin */
-  
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius: 0.75rem;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - var(--gap))); }
+  }
+  @keyframes grid {
+    0% { transform: translateY(-50%); }
+    100% { transform: translateY(0); }
+  }
 }
 
-:root {
-  /* NDRYSHIMI KRYESOR: E bëjmë të zezë që në fillim */
-  --background: oklch(0 0 0); /* Black */
-  --foreground: oklch(0.98 0.01 60);
-  --card: oklch(0.1 0 0);
-  --card-foreground: oklch(0.98 0.01 60);
-  --primary: oklch(0.7 0.2 190); /* Cyan vibe */
-  --primary-foreground: oklch(0 0 0);
-  --secondary: oklch(0.2 0 0);
-  --border: oklch(1 1 1 / 10%);
-  --input: oklch(1 1 1 / 10%);
-  --ring: oklch(0.7 0.2 190);
+/* Rregullimi për Mobile: Ndalon lëvizjen anësore të padëshiruar */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%; /* Fix për tekstin në iOS */
 }
 
-/* Forcojmë modalitetin dark */
-.dark {
-  --background: oklch(0 0 0);
-  --foreground: oklch(0.98 0.01 60);
-  --border: oklch(1 1 1 / 15%);
+html:has(.fixed.z-\[2000\]) {
+  overflow: hidden;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  
+  * { cursor: none !important; }
+
   body {
-    /* Heqim background-image që mund të jetë e çelur dhe forcojmë të zezën */
-    @apply bg-background text-foreground antialiased;
-    background-color: #000000 !important;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    scroll-behavior: smooth;
-    
-    /* Noise Effect më i errët */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-    background-attachment: fixed;
+    @apply bg-[#050505] text-white antialiased selection:bg-[#CCFF00] selection:text-black;
   }
 
-  /* Rregullimi i Scrollbar për stil Apple Dark */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: #000; }
-  ::-webkit-scrollbar-thumb { 
-    background: #333; 
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb:hover { background: #444; }
+  /* Tipografia Fluide: Më e vogël në mobile, gjigande në desktop */
+  h1 { @apply text-4xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
+  h2 { @apply text-3xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
+  h3 { @apply text-2xl md:text-3xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
 }
 
-@layer utilities {
-  .glass { 
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-blur: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .text-glow {
-    text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
-  }
-}
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #CCFF00; }
