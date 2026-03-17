@@ -18,29 +18,36 @@
   }
 }
 
-/* Rregullimi për Mobile */
+/* Rregullimi i saktë për Mobile */
 html, body {
-  max-width: 100vw;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
+  position: relative;
+  overflow-x: hidden; /* Vetëm anash */
+  width: 100%;
+  /* Ky rresht poshtë shton atë ndjesinë "smooth" në iPhone */
+  -webkit-overflow-scrolling: touch; 
 }
 
-/* Fix për bllokimin e scroll-it */
-html:has(.fixed.z-\[9999\], .fixed.z-\[1000000\]) {
-  overflow: hidden;
+/* Ky rregull bllokon scroll-in vetëm kur modali është realisht i hapur */
+/* Përdorim një klasë që do e shtojmë nga React, jo :has() sepse :has është i ngadaltë në mobile */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100vh;
 }
 
 @layer base {
-  /* 1. Fshehim kursorin kudo si parazgjedhje */
-  * { 
-    cursor: none; 
+  /* Fshehim kursorin vetëm në pajisjet që kanë mi (PC) */
+  @media (pointer: fine) {
+    * { cursor: none; }
+    
+    [data-search-modal="true"],
+    [data-search-modal="true"] * {
+      cursor: auto !important;
+    }
   }
 
-  /* 2. RREGULLI TOTAL: Kthejmë miun te tabela e kërkimit */
-  /* Përdorim !important për të mposhtur çdo stil tjetër inline ose librari */
-  [data-search-modal="true"],
-  [data-search-modal="true"] * {
-    cursor: auto !important;
+  /* Në telefon (touch), kursori duhet të jetë gjithmonë auto */
+  @media (pointer: coarse) {
+    * { cursor: auto !important; }
   }
 
   body {
@@ -49,11 +56,12 @@ html:has(.fixed.z-\[9999\], .fixed.z-\[1000000\]) {
 
   h1 { @apply text-4xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
   h2 { @apply text-3xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
-  h3 { @apply text-2xl md:text-3xl font-black uppercase tracking-tighter; font-family: var(--font-clash); }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #050505; }
-::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #CCFF00; }
+/* Custom Scrollbar - fshihet në mobile që mos të zërë vend */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #050505; }
+  ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #CCFF00; }
+}
