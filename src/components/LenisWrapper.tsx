@@ -14,16 +14,23 @@ export function LenisWrapper({ children }: LenisWrapperProps) {
       duration: 1.4,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      smoothTouch: false,
+      // smoothTouch: false,  ← HIQET KËTU – nuk ekziston më në opsionet aktuale
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
     });
 
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
+
     requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    // Cleanup
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   return <>{children}</>;
