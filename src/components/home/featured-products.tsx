@@ -1,11 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
-import { ShoppingPlus, ArrowUpRight } from "lucide-react";
+import { Plus, ArrowUpRight } from "lucide-react"; // Ndryshuar nga ShoppingPlus në Plus
 import { useCart } from "@/store/useCart";
 
 const PRODUCTS = [
   {
-    id: "p1",
+    id: 1, // Ndryshuar në number që të përputhet me interface-in e useCart
     name: "Titan Watch Ultra",
     price: "799",
     category: "Wearables",
@@ -13,7 +13,7 @@ const PRODUCTS = [
     color: "from-orange-500/20"
   },
   {
-    id: "p2",
+    id: 2,
     name: "Core Audio V2",
     price: "349",
     category: "Audio",
@@ -21,7 +21,7 @@ const PRODUCTS = [
     color: "from-blue-500/20"
   },
   {
-    id: "p3",
+    id: 3,
     name: "Titan Book Pro M3",
     price: "2499",
     category: "Laptops",
