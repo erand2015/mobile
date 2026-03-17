@@ -2,12 +2,17 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ShoppingCart, Search, Menu, X } from 'lucide-react';
-import { useCart } from '@/store/useCart'; // Sigurohu që emri i store-it është i saktë
+import { useCart } from '@/store/useCart'; 
 import { useState } from 'react';
-import { CartDrawer } from '../cart/CartDrawer'; // Importo CartDrawer-in
+
+// ZGJIDHJA E GABIMIT TË IMPORTIT:
+// Nëse skedari ndodhet te src/components/shop/cart-drawer.tsx
+import { CartDrawer } from '@/components/shop/cart-drawer';
+
+// NËSE skedari ndodhet te src/components/cart/CartDrawer.tsx (shkronja të mëdha), përdor këtë:
+// import { CartDrawer } from '@/components/cart/CartDrawer';
 
 export default function Navbar() {
-  // Marrim funksionet nga store-i i përbashkët
   const { items, openCart } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -23,18 +28,16 @@ export default function Navbar() {
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center gap-10 text-sm font-bold uppercase tracking-widest">
-            <Link href="#phones" className="hover:text-[#CCFF00] transition">Celularë</Link>
-            <Link href="#accessories" className="hover:text-[#CCFF00] transition">Aksesorë</Link>
-            <Link href="#deals" className="hover:text-[#CCFF00] transition">Oferta</Link>
+            <Link href="#phones" className="hover:text-[#CCFF00] transition text-white">Celularë</Link>
+            <Link href="#accessories" className="hover:text-[#CCFF00] transition text-white">Aksesorë</Link>
+            <Link href="#deals" className="hover:text-[#CCFF00] transition text-white">Oferta</Link>
           </div>
 
           <div className="flex items-center gap-6">
-            {/* Search Icon */}
             <div className="relative group">
               <Search className="w-6 h-6 cursor-pointer hover:text-[#CCFF00] transition text-zinc-400" />
             </div>
 
-            {/* Cart Icon - Tani hap koshin e Zustand */}
             <button 
               onClick={openCart} 
               className="relative flex items-center gap-2 hover:text-[#CCFF00] transition text-zinc-400"
@@ -51,7 +54,6 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* Mobile Menu Toggle */}
             <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-white">
               {menuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
             </button>
@@ -63,7 +65,7 @@ export default function Navbar() {
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:hidden bg-black border-b border-white/5 p-6 flex flex-col gap-4 text-center font-bold uppercase"
+            className="md:hidden bg-black border-b border-white/5 p-6 flex flex-col gap-4 text-center font-bold uppercase text-white"
           >
             <Link href="#phones" onClick={() => setMenuOpen(false)}>Celularë</Link>
             <Link href="#accessories" onClick={() => setMenuOpen(false)}>Aksesorë</Link>
@@ -72,7 +74,6 @@ export default function Navbar() {
         )}
       </nav>
 
-      {/* ZGJIDHJA E GABIMIT: Thirrja e CartDrawer pa props pasi i menaxhon vetë */}
       <CartDrawer />
     </>
   );
