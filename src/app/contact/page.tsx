@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Navbar } from "@/components/shared/navbar";
+// RREGULLIMI: Importohet Navbar pa kllapa gjarpëruese
+import Navbar from "@/components/shared/navbar";
 import { Mail, MessageSquare, MapPin, Send, Globe } from "lucide-react";
 
 export default function ContactPage() {
@@ -31,7 +32,7 @@ export default function ContactPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           
-          {/* LEFT: Contact Info (4 Kolona) */}
+          {/* LEFT: Contact Info */}
           <div className="lg:col-span-4 space-y-12">
             <div className="space-y-8">
               <ContactMethod 
@@ -66,7 +67,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* RIGHT: Modern Form (8 Kolona) */}
+          {/* RIGHT: Modern Form */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -100,20 +101,35 @@ export default function ContactPage() {
               </button>
             </form>
           </motion.div>
-
         </div>
       </div>
 
       <style jsx>{`
         .contact-input {
-          @apply w-full bg-black/50 border border-white/10 rounded-2xl py-5 px-6 text-xs font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[#CCFF00] transition-all placeholder:text-zinc-700;
+          width: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 1rem;
+          padding: 1.25rem 1.5rem;
+          font-size: 0.75rem;
+          font-weight: 900;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: white;
+          transition: all 0.2s;
+        }
+        .contact-input:focus {
+          outline: none;
+          border-color: #CCFF00;
+        }
+        .contact-input::placeholder {
+          color: #3f3f46;
         }
       `}</style>
     </main>
   );
 }
 
-// Sub-komponent për metodat e kontaktit
 const ContactMethod = ({ icon, title, detail, delay }: any) => (
   <motion.div 
     initial={{ opacity: 0, x: -10 }}
