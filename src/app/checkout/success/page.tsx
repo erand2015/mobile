@@ -1,100 +1,53 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight, Package, Home } from "lucide-react";
-import { Navbar } from "@/components/shared/navbar";
 
-export default function OrderSuccessPage() {
+// NDRYSHOJE NGA: import { Navbar } from "@/components/shared/navbar";
+// NE KETE:
+import Navbar from "@/components/shared/navbar";
+
+import Link from "next/link";
+
+export default function SuccessPage() {
   return (
-    <main className="min-h-screen bg-[#050505] text-white flex flex-col">
+    <main className="min-h-screen bg-[#050505] text-white overflow-hidden">
       <Navbar />
       
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="max-w-md w-full text-center space-y-8">
+      <div className="flex flex-col items-center justify-center min-h-screen px-6 pt-20">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-zinc-900/50 border border-white/5 p-12 rounded-[40px] max-w-lg w-full text-center relative overflow-hidden"
+        >
+          {/* Efekti Glow prapa iconës */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-[#CCFF00]/20 blur-[60px] -z-10" />
           
-          {/* Icon Animation */}
-          <div className="relative inline-block">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", damping: 12, stiffness: 200, delay: 0.2 }}
-              className="h-24 w-24 bg-[#CCFF00] rounded-full flex items-center justify-center text-black"
-            >
-              <CheckCircle2 size={48} strokeWidth={2.5} />
-            </motion.div>
+          <div className="flex justify-center mb-6">
+            <div className="bg-[#CCFF00] p-4 rounded-full shadow-[0_0_30px_rgba(204,255,0,0.4)]">
+              <CheckCircle2 size={48} className="text-black" />
+            </div>
+          </div>
+
+          <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">
+            Porosia u krye<span className="text-[#CCFF00]">!</span>
+          </h1>
+          <p className="text-zinc-400 mb-10 leading-relaxed font-medium">
+            Faleminderit që zgjodhët CELLUX. Konfirmimi i porosisë suaj është dërguar në email-in tuaj.
+          </p>
+
+          <div className="grid grid-cols-1 gap-4">
+            <Link href="/" className="group flex items-center justify-center gap-2 bg-[#CCFF00] text-black py-4 rounded-2xl font-black uppercase tracking-tighter transition-transform active:scale-95">
+              Kthehu te Kreu
+              <Home size={18} />
+            </Link>
             
-            {/* Animated Rings */}
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0.5, scale: 1 }}
-                animate={{ opacity: 0, scale: 2 }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.4 }}
-                className="absolute inset-0 border-2 border-[#CCFF00] rounded-full"
-              />
-            ))}
+            <Link href="/account/orders" className="flex items-center justify-center gap-2 bg-white/5 text-white py-4 rounded-2xl font-black uppercase tracking-tighter hover:bg-white/10 transition">
+              Shiko Porositë
+              <Package size={18} />
+            </Link>
           </div>
-
-          <div className="space-y-4">
-            <motion.h1 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-4xl font-black uppercase tracking-tighter"
-            >
-              POROSIA U <span className="text-[#CCFF00]">PRANUA</span>
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="text-zinc-500 text-xs font-bold uppercase tracking-widest leading-relaxed"
-            >
-              Faleminderit që zgjodhët TitanCore. Konfirmimi i porosisë është dërguar në email-in tuaj.
-            </motion.p>
-          </div>
-
-          {/* Info Box */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.9 }}
-            className="bg-zinc-900/50 border border-white/5 rounded-[32px] p-8 space-y-6 text-left"
-          >
-            <div className="flex justify-between items-center border-b border-white/5 pb-4">
-              <span className="text-[10px] font-black text-zinc-500 uppercase">Nr. i Porosisë</span>
-              <span className="text-[10px] font-black text-white">#TC-88291</span>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-white/5 rounded-xl text-[#CCFF00]">
-                <Package size={20} />
-              </div>
-              <div>
-                <h4 className="text-[10px] font-black uppercase text-white">Dërgesa e Shpejtë</h4>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase mt-1">Pritet të vijë brenda 48 orëve.</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Actions */}
-          <div className="flex flex-col gap-3">
-            <a 
-              href="/"
-              className="w-full bg-white text-black py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-[#CCFF00] transition-colors"
-            >
-              Kthehu në Dyqan <Home size={14} />
-            </a>
-            <button className="text-zinc-500 hover:text-white text-[9px] font-black uppercase tracking-[0.2em] transition-colors">
-              Shkarko Faturën (PDF)
-            </button>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Background Decor */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#CCFF00]/5 blur-[120px] rounded-full" />
+        </motion.div>
       </div>
     </main>
   );
