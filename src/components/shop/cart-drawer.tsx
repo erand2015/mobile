@@ -1,17 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Trash2, Plus, Minus, TicketPercent, Truck, ArrowRight } from "lucide-react";
+import { X, ShoppingBag, Trash2, Plus, Minus, Truck } from "lucide-react";
 import { useCart } from "@/store/useCart";
-import { useRouter } from "next/navigation"; // <--- KJO U SHTUA
+import { useRouter } from "next/navigation";
 
 export const CartDrawer = () => {
   const { items, isOpen, closeCart, removeItem, updateQuantity, discount, applyDiscount } = useCart();
   const [coupon, setCoupon] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter(); // <--- KJO U SHTUA
+  const router = useRouter();
 
-  // Konfigurimi për Transport Falas
   const FREE_SHIPPING_THRESHOLD = 3000;
   const subtotal = items.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
   const progress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
@@ -20,22 +19,15 @@ export const CartDrawer = () => {
   const discountAmount = subtotal * discount;
   const total = subtotal - discountAmount;
 
-  const handleCoupon = () => {
-    const success = applyDiscount(coupon);
-    if (!success) {
-      setError("Kodi i pavlefshëm");
-      setTimeout(() => setError(""), 3000);
-    } else {
-      setError("");
-      setCoupon("");
-    }
+  const handleCheckout = () => {
+    closeCart(); // Mbylle drawer-in para se të kalosh te faqja tjetër
+    router.push("/checkout");
   };
 
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
         <>
-          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -44,7 +36,6 @@ export const CartDrawer = () => {
             className="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm"
           />
 
-          {/* Drawer Panel */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -52,7 +43,6 @@ export const CartDrawer = () => {
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed right-0 top-0 z-[1001] h-full w-full max-w-md bg-[#050505] border-l border-white/5 p-8 flex flex-col shadow-2xl"
           >
-            {/* Header, Progress Bar dhe Lista e produkteve (KODI YT I PAPREKUR) */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
                 <div className="relative">
@@ -70,7 +60,6 @@ export const CartDrawer = () => {
               </button>
             </div>
 
-            {/* SHIPPING PROGRESS */}
             {items.length > 0 && (
               <div className="mb-8 p-4 bg-white/5 rounded-2xl border border-white/5">
                 <div className="flex justify-between items-center mb-2">
@@ -91,7 +80,6 @@ export const CartDrawer = () => {
               </div>
             )}
 
-            {/* Product List */}
             <div className="flex-1 overflow-y-auto pr-2 space-y-6 custom-scrollbar">
               {items.map((item) => (
                 <motion.div layout key={item.id} className="flex gap-4 group bg-white/5 p-4 rounded-2xl border border-white/5">
@@ -118,10 +106,8 @@ export const CartDrawer = () => {
               ))}
             </div>
 
-            {/* Footer */}
             {items.length > 0 && (
               <div className="mt-6 pt-6 border-t border-white/5 space-y-4">
-                {/* Promo Code dhe Totali mbeten njesoj */}
                 <div className="space-y-2 py-2">
                   <div className="flex justify-between items-end pt-2">
                     <span className="text-white text-xs font-bold uppercase tracking-widest">Totali</span>
@@ -129,15 +115,11 @@ export const CartDrawer = () => {
                   </div>
                 </div>
 
-                {/* BUTONI I LIDHUR */}
                 <button 
-                  onClick={() => {
-                    closeCart(); // Mbylle koshin
-                    router.push("/checkout"); // Shko te faqja e checkout
-                  }}
+                  onClick={handleCheckout}
                   className="w-full bg-[#CCFF00] text-black py-5 rounded-2xl font-black uppercase tracking-tighter hover:scale-[1.02] active:scale-95 transition shadow-[0_20px_40px_-10px_rgba(204,255,0,0.3)]"
                 >
-                  Paguaj Tani
+                  Vazhdo te Pagesa
                 </button>
               </div>
             )}
